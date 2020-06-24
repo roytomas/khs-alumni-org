@@ -23,6 +23,10 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.banner{
+  height: 350px;
+  background-image: url(./img/school.jpg);
+}
 
 .App-link {
   color: #61dafb;
