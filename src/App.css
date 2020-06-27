@@ -25,7 +25,10 @@
 }
 .banner{
   height: 350px;
-  background-image: url(./img/school.jpg);
+  background-image: url(./img/banner.JPG);
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover*/
 }
 
 .App-link {

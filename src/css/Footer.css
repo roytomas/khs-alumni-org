@@ -1,0 +1,10 @@
+footer{
+    background-color: #25282a;
+    color: rgba(255, 255, 255, 0.6) !important;
+    padding-top: 3em;
+}
+
+.footer-links {
+    list-style-type: none;
+    padding-left: 10px;
+}

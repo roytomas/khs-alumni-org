@@ -5,15 +5,22 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { createTodo } from './graphql/mutations'
 import { listTodos } from './graphql/queries'
 import { withAuthenticator } from '@aws-amplify/ui-react'
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Navbar from './components/CustomNavbar';
+import Footer from './components/Footer';
+import im1 from './img/01.png';
+import im2 from './img/02.png';
+import im3 from './img/03.png';
+import im4 from './img/04.png';
+import './css/Footer.css';
 const initialState = { name: '', description: '' }
 
-const App = () => {
+const App = () =>{
   const [formState, setFormState] = useState(initialState)
   const [todos, setTodos] = useState([])
 
   useEffect(() => {
-    fetchTodos()
+    //fetchTodos()
   }, [])
 
   function setInput(key, value) {
@@ -41,70 +48,116 @@ const App = () => {
   }
 
   return (
-    <div style={styles.container}>
-        <div className="banner"/>
-        <div style={styles.content}>
-          <div>
-          <b>অ্যালামনাই কি?</b><br/>
-          স্কুল, কলেজ কিংবা বিশ্ববিদ্যালয়ের প্রাক্তন ছাত্রকে বলা হয় Alumnus, প্রাক্তন ছাত্রীকে বলা হয় Alumna, আর প্রাক্তন ছাত্র-ছাত্রীদেরকে বলা হয় Alumni(plural).ল্যাটিন শব্দ Alumni যার ইংরেজি শব্দ Students এবং বাংলা শব্দ ছাত্র-ছাত্রী।<br/>
-          সুতরাং স্কুল,কলেজ কিংবা বিশ্ববিদ্যালয়ের প্রাক্তন ছাত্র-ছাত্রীদেরকে নিয়ে গঠিত সংগঠনকে বলা হয় অ্যালামনাই এসোসিয়েসন।১৮৪০ সালে আমেরিকার মার্শাল কলেজের প্রাক্তন ছাত্র-ছাত্রীরাই সংগঠিত হয়ে গড়ে তুলেছিলো অ্যালামনাই এসোসিয়েসন,একটা ওল্ড নেটওয়ার্ক।<br/>
-          তারপর একে একে গড়ে ওঠে পৃথীবি বিখ্যাত অ্যালামনাই এসোসিয়েসনসমুহ হার্ভাড ইউনিভার্সিটি,এমআইটি,ইয়েল ইউনিভার্সিটি অ্যালামনাই এসোসিয়েসনসমুহ। মার্ক জুকারবার্গ,বারাক ওবামা,বিল গেটস সবাই যেমন হার্ভার্ড অ্যালামনাই।
-          <br/>
-          <p>
-          <b>লক্ষ্য-উদ্দ্যেশ্যসমুহঃ</b><br/>
-          ১)১৯৬৭ হতে ২০২০ পর্যন্ত স্কুলের সকল অ্যালামনাইদের নিয়ে একটা সামাজিক কল্যানমুলক নেটওয়ার্ক তৈরি করা।<br/>
-          ২)গ্রাম থেকে শহর, দেশ থেকে বিদেশ যে যেখানে ছড়িয়ে আছে সকলের সাথে একটা আন্ত:সম্পর্ক নির্মানের মাধ্যমে প্রত্যেকে প্রত্যেকের জন্য সহায়ক হয়ে ওঠার প্লাটফর্ম নির্মান।<br/>
-          ৩)নবীন প্রবীনদের মধ্যে একটা যোগসূত্র তৈরি করা,যাতে পুরাতনদের ছায়ায়,নতুনরা নুন্যতম প্রস্ফুটিত হবার নানামুখী সুযোগ পায়।<br/>
-          ৪)স্কুলের সাথে নিরন্তর যোগাযোগ স্হাপন,শিক্ষার মানোন্নয়নে,স্কুলের সকল কল্যানমুলক কর্মকান্ডে প্রত্যেক অ্যালামনাই সামর্থ্য অনুযায়ী অবদান রাখা।<br/>
-          ৫)অত্র অঞ্চলের সাধারন শিক্ষা,কারিগরি শিক্ষার প্রসারে অনেকের অংশগ্রহনে উদ্বুদ্ধ করা,নির্দেশনা প্রদান,সার্বিক দিক দিয়ে তাদের পাশে দাঁড়ানো।<br/>
-          ৬)গরীব মেধাবি শিক্ষার্থীদের সার্বিক সহযোগিতার মাধ্যমে তাদের মেধা বিকাশে সহায়তা করা।<br/>
-          ৭)উচ্চ শিক্ষার অধিক সুযোগ সৃষ্টি/অধিক অংশগ্রহন নিশ্চিতকরনের লক্ষ্যে পরিকল্পিতভাবে কার্যকরি পদক্ষেপ গ্রহন করা।<br/>
-          ৭)স্কুলে প্রতিবছর দেয়াল পত্রিকা বের করার মাধ্যমে নতুন প্রজন্মকে সৃজনশীল কর্মকান্ডে সম্পৃক্ত করা।<br/>
-          ৮)সাহিত্যপত্রিকা/,লিটলম্যাগ/,ভাঁজপত্র/স্যুভেনির প্রকাশ করা,যাতে অ্যালামনাইদের মধ্যে একরকমের সৃজনশীল যোগসূত্র তৈরি হয়।<br/>
-          ৯)শীতার্ত মানুষের পাশে দাঁড়ানো,গৃহহীন,দুস্হ,অসুস্হ
-          ,অসহায় মানুষের কল্যানে নানামুখি মানবিক পদক্ষেপ গ্রহন করা।<br/>
-          ১০) এলাকার শিক্ষা,স্বাস্হ্য, কৃষি,যুব,মৎস,সমবায়,নারী,
-          প্রকৃতি, প্রযুক্তিগত উন্নয়নে সরকারের উপজেলা/ জেলা 
-          পর্যায়ের প্রশাসনের সাথে লিংক তৈরি করে কার্যকরি সহায়তা প্রদান।<br/>
-          ১১)এলাকার সকল সামাজিক উন্নয়নমুলক কর্মকান্ডে অংশগ্রহনের মাধ্যমে সামাজিক দ্বায়বোধ প্রতিপালন করা।<br/>
-          ১২)কৈলাশগঞ্জ হাই স্কুলের যে সমস্ত সম্মানীত শিক্ষক অত্র স্কুলের প্রাক্তন ছাত্র নন,তারা স্বয়ংক্রিয়ভাবে অ্যালামনাই এসোসিয়েসন পরিচালনা পর্ষদের সম্মানীত উপদেষ্টা হবেন,যাতে এসোসিয়েসনের  সকল কর্মকান্ডে গুরুত্বপুর্ন অংশীদাররুপে কাজ করতে পারেন।
-          </p>
-          </div>
+    <Router>
+     <Navbar/>
+     <div className="banner">
        
-         <div style={styles.contentPad}>
-         <h2>Registration</h2>
-          <input
-            onChange={event => setInput('name', event.target.value)}
-            style={styles.input}
-            value={formState.name} 
-            placeholder="Name"
-          />
-          <input
-            onChange={event => setInput('description', event.target.value)}
-            style={styles.input}
-            value={formState.description}
-            placeholder="Description"
-          />
-          <button style={styles.button} onClick={addTodo}>Register</button>
-          {
-            todos.map((todo, index) => (
-              <div key={todo.id ? todo.id : index} style={styles.todo}>
-                <p style={styles.todoName}>{todo.name}</p>
-                <p style={styles.todoDescription}>{todo.description}</p>
-              </div>
-            ))
-          }
-         </div>
-          
+     </div>
+      <div style={styles.container}>
+      <div className="row" style={styles.content}>
+          <div className="col-md-12 col-sm-12">
+            <h3>What & Why Alumni</h3>
+            <p>
+            Students who have graduated from a school, college or university is called an alumnus, a girl alumnus is called an alumna, where alumni is formd as plural. Thus, an organization consisting of alumni of a school, college or university is called an alumni association. MIT, Oxford University Alumni Associations. Mark Zuckerberg, Barack Obama, Bill Gates are all Harvard alumni.
+            </p>
+          </div>
         </div>
-    </div>
+        <div className="row" style={styles.content}>
+        <div  className="col-md-12 col-sm-12">            
+            <h3>Our Mission</h3>
+            <p>
+            ※ Creating a social welfare network with all the alumni of the school from 198 to 2020.<br/>
+            ※ Building a platform for everyone to become helpful by building an inter-relationship with everyone from village to city, country to foreign wherever it is spread.<br/>
+            ※ Createing a link between the young and the old, so that in the shadow of the old, the new has the opportunity to flourish in the least.<br/>
+            ※ Establishing constant communication with the school, to improve the quality of education, to contribute to all the welfare activities of the school according to the ability of each alumni.<br/>
+            ※ General education in the region, to encourage the participation of many in the expansion of technical education, to give guidance, to stand by them in all aspects.<br/>
+            ※ Helping poor meritorious students in developing their talents through overall cooperation.<br/>
+            ※ Taking planned and effective steps to create more opportunities / higher participation in higher education.<br/>
+            ※ Involving the new generation in creative activities by publishing wall magazines in the school every year.<br/>
+            </p>
+            <p>
+            <div className="btn btn-danger">Know More</div>
+            </p>
+
+          {/* <div style={styles.contentPad}>
+          <h2>Registration</h2>
+            <input
+              onChange={event => setInput('name', event.target.value)}
+              style={styles.input}
+              value={formState.name} 
+              placeholder="Name"
+            />
+            <input
+              onChange={event => setInput('description', event.target.value)}
+              style={styles.input}
+              value={formState.description}
+              placeholder="Description"
+            />
+            <button style={styles.button} onClick={addTodo}>Register</button>
+            {
+              todos.map((todo, index) => (
+                <div key={todo.id ? todo.id : index} style={styles.todo}>
+                  <p style={styles.todoName}>{todo.name}</p>
+                  <p style={styles.todoDescription}>{todo.description}</p>
+                </div>
+              ))
+            }
+          </div>
+          
+             */}
+          </div>
+         
+        </div>
+        {/* <div className="row">
+          <div style={styles.joinnetwork} className="col-md-12 col-sm-12">
+             Join our Network
+          </div>
+        </div> */}
+        <div className="row" style={styles.content}>
+          <div className="col-md-12 col-sm-12">
+            <h3>Our Responsibility</h3>
+            <div class="col-lg-3 col-sm-6">
+                <div className="single-responsibility">
+                    <img src={im1} alt="Responsibility"/>
+                    <h4>Scholarship</h4>
+                    <p>De create building thinking about your requirment and latest treand on our marketplace area</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div className="single-responsibility">
+                    <img src={im2} alt="Responsibility"/>
+                    <h4>Help current students</h4>
+                    <p>De create building thinking about your requirment and latest treand on our marketplace area</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div className="single-responsibility">
+                    <img src={im3} alt="Responsibility"/>
+                    <h4>Help institution</h4>
+                    <p>De create building thinking about your requirment and latest treand on our marketplace area</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div className="single-responsibility">
+                    <img src={im4} alt="Responsibility"/>
+                    <h4>Build our community</h4>
+                    <p>De create building thinking about your requirment and latest treand on our marketplace area</p>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+     <Footer/>
+    </Router>
   )
-}
+ }
 
 const styles = {
   container: { width: 950, margin: '0 auto', display: 'flex', flex: 1, flexDirection: 'column', justifyContent: 'center', padding: 20 },
-  content: { width: 850, margin: '4px auto', display: 'flex', flex: 1,  textAlign: 'justify',justifyContent: 'left', padding: 20,border:'1px dotted' },
+  content: {padding:"5px", border:'1px #e2e2e2 solid',borderRadius:5,margin:'5px' ,boxShadow: '5px 5px 2px 1px #e2e2e2'},
   todo: {  marginBottom: 15 },
+  joinnetwork:{padding:30,borderRadius:50,border:'1px solid' },
   input: { border: 'none', backgroundColor: '#ddd', marginBottom: 10, padding: 8, fontSize: 18 },
   todoName: { fontSize: 20, fontWeight: 'bold' },
   todoDescription: { marginBottom: 0 },
